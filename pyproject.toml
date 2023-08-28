@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "langchoice"
+version = "0.0.1"
+description = "switch-case over free-form sentences."
+
+license = "Apache License, Version 2.0"
+
+authors = [
+    "Nishant Sinha <nishant@offnote.co>"
+]
+
+repository = "https://github.com/ekshaks/langchoice"
+
+# README file(s) are used as the package description
+readme = ["README.md", "LICENSE"]
+
+# Keywords (translated to tags on the package index)
+keywords = ["LLM", "QA", "IR", "embeddings", "switch-case", "if-then-else"]
+
+[tool.poetry.dependencies]
+# Compatible Python versions
+python = ">=3.10"
+
