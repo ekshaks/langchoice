@@ -75,5 +75,5 @@ match S.match(user_msg):
 
 ## Roadmap
 
-[] allow switching under-the-hood sentence encoders
+- [] allow switching under-the-hood sentence encoders
 

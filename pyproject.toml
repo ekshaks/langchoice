@@ -12,7 +12,7 @@ authors = [
 repository = "https://github.com/ekshaks/langchoice"
 
 # README file(s) are used as the package description
-readme = ["README.md", "LICENSE"]
+readme = ["README.md"]
 
 # Keywords (translated to tags on the package index)
 keywords = ["LLM", "QA", "IR", "embeddings", "switch-case", "if-then-else"]
