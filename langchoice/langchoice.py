@@ -7,12 +7,12 @@ from pathlib import Path
 #from embed import text_embed
 import chromadb
 
-Category = TypeVar("Category") #str
+Intent = TypeVar("Intent") #str
 Utt = TypeVar("Utt") #str
 
 
 class LangStore:
-    def __init__(self, cat2sents: Dict[Category, List[Utt]], index_path='/tmp/gm') -> None:
+    def __init__(self, cat2sents: Dict[Intent, List[Utt]], index_path='/tmp/gm') -> None:
         self.cat2sents = cat2sents
         self.category_list = list(cat2sents.keys())
         self.cat2id = lambda cat: self.category_list.index(cat)
@@ -35,7 +35,7 @@ class LangStore:
             ids=[d['doc_id'] for d in self.mem]
         )
 
-    def find_match(self, query_msg, n=1):
+    def find_match(self, query_msg, threshold, n=1, debug=False):
         '''
         1. avg dist per cluster. pick cluster with min dist
         2. min dist to vec. map vec to cluster id. (implemented)
@@ -48,16 +48,21 @@ class LangStore:
         )
         doc_idx, query_txt_idx = 0, 0
         category = results['metadatas'][query_txt_idx][doc_idx]['category']
+        distance = results['distances'][query_txt_idx][doc_idx]
         utterances = self.cat2sents[category]
-        return category, utterances
+        if debug: print(results)
+        if distance < threshold:
+            return category, utterances
+        else:
+            return None
 
-    def lang_check(self, query_msg): 
+    def match(self, query_msg, threshold=1.1, debug=False): 
         '''
         TODO: ambiguity resolution:
         if top k topics very close (< dist d), then return all topics, distances to 
         decide later.
         '''
-        return self.find_match(query_msg, n=1)
+        return self.find_match(query_msg, threshold, n=1, debug=debug)
 
 
 def index_or_query():
