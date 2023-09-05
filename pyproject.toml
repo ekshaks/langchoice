@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "langchoice"
-version = "0.0.1"
+version = "0.0.2"
 description = "switch-case over free-form sentences."
 
 license = "Apache License, Version 2.0"
@@ -21,6 +21,13 @@ keywords = ["LLM", "QA", "IR", "embeddings", "switch-case", "if-then-else"]
 [tool.poetry.dependencies]
 # Compatible Python versions
 python = ">=3.10"
+
+
+[project]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
 
 
 
