@@ -23,14 +23,18 @@ greeting:
     - hello
 '''
 
+
+
 from .langchoice import LangStore
 
 
-def load_rules():
+def load_db(index=False):
     import yaml
     data = yaml.safe_load(triggers)
     print(data) #(cat | sent*)
     S = LangStore(data)
+    if index:
+        S.index()
     return S
 
 def execute_conv_flow__(category):
@@ -39,21 +43,44 @@ def execute_conv_flow__(category):
     '''
     print(f'executing conv_flow for {category}')
 
-def test_two_topics(S: LangStore, user_msg):
-    match S.match(user_msg, threshold=1.2, debug=False): 
+def match_then_exec(S: LangStore, user_msg, debug=False):
+    match S.match(user_msg, threshold=1.2, debug=debug, debug_k=5): 
         case topic, _ if topic in ['politics', 'greeting']:
             execute_conv_flow__(topic)
         case x :
             print(f'No predefined triggers. Ask LLM!')
 
 
+import pytest
+
+@pytest.fixture
+def inputs():
+    S = load_db(index=False)
+   
+    qs = [
+        'hello citizens of the nation',
+        'define politics of the region',
+        'meet tomorrow at 10?'
+
+    ]
+    return S, qs
+
+def test_nearest(inputs):
+    # test match (nearest element)
+    S, qs = inputs
+    for q in qs:
+        match_then_exec(S, q, debug=True)
+
+def test_centroid(inputs):
+    # test match_centroid
+    S, qs = inputs
+
+    for q in qs:
+        S.match_centroid(q, debug=True)
 
 if __name__ == '__main__':
-    S = load_rules()
-    test_two_topics(S, 'hello friend of the government')
-    test_two_topics(S, 'define politics of the world')
-    test_two_topics(S, 'meet tomorrow at 10?')
-    #index_or_query()
+    #S.index(reset=True)
+    test_nearest(inputs())
 
 
 
