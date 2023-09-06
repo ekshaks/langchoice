@@ -12,28 +12,6 @@ match user_msg
 
 '''
 
-def run_conversation():
-    assistant_state = 0
-    while True:
-        say__(assistant_state)
-        user_response = get_response__()
-        response_id = match__(user_response, template_graph[assistant_state])
-        assistant_state = update_state(assistant_state, response_id)
-
-        if is_terminal__(assistant_state, template_graph):
-            break;
-'''
-def run_conversation2():
-    state = 'start'
-    while True:
-        say__(bot_msgs.at_state[state])
-        if is_terminal__(state): break
-        user_msg = input('User: ')
-        actions, next_state = get_next__(user_msg, state)
-        execute_actions()
-        state = next_state
-'''
-
 def update_state(state, next_state):
     print(f'Updating state from {state} to {next_state}')
     #TODO: assistant action
