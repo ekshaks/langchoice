@@ -20,7 +20,7 @@ pip install langchoice
 
 ## 🧪 Getting Started
 
-Suppose you want to detect if the user message *triggered* one of the following (*greeting*, *politics*) categories.
+Suppose we want to detect if an incoming user message *triggered* belongs to one of the following (*greeting*, *politics*) topics. Do this in a few lines using `langchoice`.
 
 First define the text messages that define each topic category (a message group).
 
@@ -60,6 +60,8 @@ match S.match(user_msg, threshold=1.2, debug=True):
         print(f'No defined triggers detected. Ask an LLM for response.')
 ```
 
+Add or remove sentences from each topic or introduce new topics. Works on-the-fly!
+
 Supports multiple matching modes:
 
 * `S.match` returns the topic of nearest message.
@@ -67,10 +69,11 @@ Supports multiple matching modes:
 * (Optional) Provide thresholds for the *no-topic-matches* case:
     - `S.match` returns `None` if the nearest topic distance is greater than the threshold.
 
+
 ## Debug and More!
 
 * Use `debug=True` and `debug_k=5` to 
-    - visualize distance of `user_msg` to topics.
+    - display distance of `user_msg` to different topics.
     - Get match scores for each message group to debug what went wrong.
 
 
@@ -82,8 +85,36 @@ Coming Soon!
 
 ### Implement a graph-based Conversation Flow
 
+The langchoice package enables you to make controlled chatbot flows as well as build guardrails very quickly.
+
+The key motivation is to allow users to have maximal control when designing the bot:
+- add/update messages on demand
+- route user messages to owner modules
+- more control over conversation flow, without losing ability to chitchat
+- build conversations, not (worry about) LLM chains!
+
+For example, see a sales lead filtering and appointment-booking bot under [examples](examples/).
+
+- Specify the assistant and user messages as well as the overall conversation flow in a yaml file easily
+- Automate the conversational flow with few lines of code
+- Add messages and modify the flow effortlessly by modifying the yaml
+    - Model picks up the changes instantly, no need to fine-tune models for the changes
+
 
 ## Roadmap
 
+- [ ] match variants
+    - [ ] hybrid match - match regex separately
+    - [ ] local S.match (based on state tag)
+    - [ ] match type='item' (default) | type='group' (centroid) | ...
 - [ ] allow switching under-the-hood sentence encoders
+- [ ] fine-tune based on in-topic and irrelevant messages
+
+
+
+## Author
+
+Nishant Sinha, Founder, Consulting Scientist, OffNote Labs. 
+
+For insights on Generative AI evolution and applications, follow on [Linkedin](https://www.linkedin.com/in/nishant-sinha-a610311/), and read our articles on [Substack](https://offnote.substack.com/).
 
