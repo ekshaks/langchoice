@@ -1,0 +1,56 @@
+
+flow:
+    appointment:
+        interested_q:
+            user.confirm: state.confirm_form
+            user.ignore: state.r_u_there
+        confirm_form:
+            user.confirm: state.call_schedule_invite
+            user.ignore: state.r_u_there
+            user.deny: state.ask_monthly_income
+        ask_monthly_income:
+            user.number($income): state.eval_lead_qualified
+        eval_lead_qualified:
+            assistant.action: 
+                - $lead_qualified = check_lead_qualified ($income)
+        #- call_schedule_invite: <end>
+
+    faq:
+        faq.ongoing:
+            - system.<2 msgs>
+            - user.<any
+
+user_msgs:
+    confirm: 
+        - "Yes"
+        - It's correct. No updates.
+    timeout: 
+        - <timeout>
+    ignore:
+        - ignore
+    deny:
+        - "No"
+        - need to update
+        - No, it is a bit different
+    number: 
+        - regex: \d*
+
+assistant_msgs:
+    interested_q: > 
+        Hey! You recently filled a form on our website. You are interested in our product. Is it true?
+    confirm_form: >
+        Great! We help businesses to get more quality followers and clients on Facebook.
+        Here are some of our clients. <links>
+        
+        Quick question before we proceed.
+        In the form you mentioned that you make m and charge c.
+        Is it correct or you have any updates?
+    r_u_there: Hey r u there?
+    
+    call_schedule_invite: >
+        Let's hop on a call where we will share with you step by step plan on how you can get to outcome X.
+        https://calendly.com/
+    
+    ask_monthly_income: No worries, what is your Monthly income?
+    eval_lead_qualified: Is lead qualified?
+    downsell: I got to downsell now!

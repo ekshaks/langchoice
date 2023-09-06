@@ -13,7 +13,8 @@ Utt = TypeVar("Utt") #str
 
 
 class LangStore:
-    def __init__(self, cat2sents: Dict[Intent, List[Utt]], index_path='/tmp/lc', distance='l2') -> None:
+    def __init__(self, cat2sents: Dict[Intent, List[Utt]], 
+                 index_path='/tmp/lc', name="all-docs", distance='l2', rebuild=False) -> None:
         self.cat2sents = cat2sents
         self.category_list = list(cat2sents.keys())
         self.cat2id = lambda cat: self.category_list.index(cat)
@@ -21,10 +22,19 @@ class LangStore:
 
         self.index_path = index_path
         self.client = chromadb.PersistentClient(path=self.index_path)
-        self.collection = self.client.get_or_create_collection("lc-all-docs")
+        
+        if rebuild:
+            try:
+                #coll = self.client.get_collection(name=name)
+                self.client.delete_collection(name=name)
+            except:
+                pass
+
+        self.collection = self.client.get_or_create_collection(name)
         # metadata={"hnsw:space": "cosine"} # l2 default. ip | cosine
 
-        #self.topic2centroid = None
+        if self.collection.count() == 0:
+            self.index()
 
     def index(self, reset=False):
         print('Indexing..')
@@ -36,6 +46,7 @@ class LangStore:
 
         for cat, utts in self.cat2sents.items():
             for i, utt in enumerate(utts):
+                if not isinstance(utt, str): continue
                 self.mem.append(dict(category=cat, text=utt, doc_id=f'{cat}_{i}'))
 
         self.collection.add(
