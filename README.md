@@ -93,12 +93,7 @@ The key motivation is to allow users to have maximal control when designing the 
 - more control over conversation flow, without losing ability to chitchat
 - build conversations, not (worry about) LLM chains!
 
-For example, see a sales lead filtering and appointment-booking bot under [examples](examples/).
-
-- Specify the assistant and user messages as well as the overall conversation flow in a yaml file easily
-- Automate the conversational flow with few lines of code
-- Add messages and modify the flow effortlessly by modifying the yaml
-    - Model picks up the changes instantly, no need to fine-tune models for the changes
+Check out the sales lead filtering and appointment-booking bots under [examples](examples/).
 
 
 ## Roadmap
