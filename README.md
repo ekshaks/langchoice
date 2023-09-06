@@ -83,13 +83,13 @@ Coming Soon!
 * Fine-tune embeddings to *separate* message clusters better.
 
 
-### Implement a graph-based Conversation Flow
+### Implement a Conversation Flow with Message-based Routing
 
 The langchoice package enables you to make controlled chatbot flows as well as build guardrails very quickly.
 
 The key motivation is to allow users to have maximal control when designing the bot:
 - add/update messages on demand
-- route user messages to owner modules
+- route user messages to owner states or modules
 - more control over conversation flow, without losing ability to chitchat
 - build conversations, not (worry about) LLM chains!
 
