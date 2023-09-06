@@ -1,6 +1,7 @@
 import sys
-
 sys.path.insert(0, '..')
+
+from langchoice import LangStore
 
 
 '''
@@ -29,10 +30,9 @@ def load_data(filename='appo.yaml'):
     print(data) #(cat | sent*)
     return data['flow'], data['assistant_msgs'], data['user_msgs']
 
-def run_c(conv_data, start='interested_q'):
+def run_conv_flow(conv_data, start='interested_q'):
     flows, assistant_msgs, user_msgs = conv_data
     appo_flow = flows['appointment']
-    from langchoice import LangStore
     state = start
     
     #print(user_msgs)
@@ -53,4 +53,4 @@ def run_c(conv_data, start='interested_q'):
 
 if __name__ == '__main__':
     D = load_data()
-    run_c(D)
+    run_conv_flow(D)
